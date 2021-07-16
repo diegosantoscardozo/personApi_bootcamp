@@ -14,10 +14,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor(onConstructor = @__(@Autowired))
+//@AllArgsConstructor
 public class PersonService {
 
     private PersonRepository personRepository;
+    
+    @Autowired
+    public PersonService(PersonRepository repo) {
+    	personRepository = repo;
+    }
 
     private final PersonMapper personMapper = PersonMapper.INSTANCE;
 
@@ -33,13 +38,13 @@ public class PersonService {
         return allPeople.stream()
                 .map(personMapper::toDTO)
                 .collect(Collectors.toList());
+        	
     }
 
-    public PersonDTO findById(Long id) throws PersonNotFoundException {
+   public PersonDTO findById(Long id) throws PersonNotFoundException {
         Person person = verifyIfExists(id);
-
         return personMapper.toDTO(person);
-    }
+   }
 
     public void delete(Long id) throws PersonNotFoundException {
         verifyIfExists(id);
@@ -53,6 +58,7 @@ public class PersonService {
 
         Person updatedPerson = personRepository.save(personToUpdate);
         return createMessageResponse(updatedPerson.getId(), "Updated person with ID ");
+    	//return null;
     }
 
     private Person verifyIfExists(Long id) throws PersonNotFoundException {

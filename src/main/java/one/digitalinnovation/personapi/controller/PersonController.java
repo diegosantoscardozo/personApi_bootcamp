@@ -4,10 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.AllArgsConstructor.AnyAnnotation;
 import one.digitalinnovation.personapi.dto.request.PersonDTO;
 import one.digitalinnovation.personapi.dto.response.MessageResponseDTO;
+import one.digitalinnovation.personapi.entity.Person;
 import one.digitalinnovation.personapi.exception.PersonNotFoundException;
 import one.digitalinnovation.personapi.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,12 +23,19 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/v1/people")
-@AllArgsConstructor(onConstructor = @__(@Autowired))
+//@AllArgsConstructor
 public class PersonController {
 
     private PersonService personService;
+    
+    //TODO - ver se é necessario
+    @Autowired
+    public PersonController(PersonService serv) {
+    	personService = serv;
+    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
